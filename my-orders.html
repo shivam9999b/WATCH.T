@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0b0b"><title>My Orders | WATCH.T</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body{background:#f7f6f3;min-height:100vh}.orders-page{max-width:1000px;margin:35px auto;padding:20px}
+    .orders-card{background:#fff;border:1px solid #e5e0d6;border-radius:8px;padding:22px;margin:18px 0}
+    .order-item{border-bottom:1px solid #eee;padding:18px 0}.order-item:last-child{border-bottom:0}
+    .order-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.order-head strong{color:#79551c}
+    .muted{color:#777;font-size:13px;line-height:1.7}.status{display:inline-block;padding:6px 10px;background:#f5ead0;color:#79551c;border-radius:3px;font-size:12px;font-weight:bold}
+    .items{font-size:14px;line-height:1.8;margin:10px 0}.order-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .btn-link{display:inline-block;padding:10px 14px;background:#111;color:#d6b56d;text-decoration:none;border-radius:3px;font-size:13px}
+    .error{color:#b42318}.success{color:#16794a}
+  </style>
+</head><body>
+  /\<header class="header"><a class="logo" href="index.html">WATCH<span>.T</span></a><a href="index.html" style="color:white">← Shop</a></header>
+  <main class="orders-page"><p class="eyebrow">YOUR ACCOUNT</p><h1>My Orders</h1>
+    <p class="muted">Yahan aapke login account se kiye gaye orders dikhte hain. Guest orders ko Track My Order page par tracking number se dekhein.</p>
+    <section class="orders-card"><div id="message" class="muted" aria-live="polite">Orders load ho rahe hain...</div><div id="ordersList"></div></section>
+    <p><a class="btn-link" href="order.html">Track a Guest Order</a> <a class="btn-link" href="login.html" id="accountLink">Login</a></p>
+  </main>
+  <script type="module">
+    import { supabase, supabaseConfigured, money, escapeHTML } from "./supabase.js";
+    const message=document.getElementById("message"), list=document.getElementById("ordersList"), accountLink=document.getElementById("accountLink");
+    function say(text,kind="muted"){message.className=kind;message.textContent=text;}
+    function fmtDate(v){if(!v)return "—";const d=new Date(v);return Number.isNaN(d.getTime())?"—":d.toLocaleString("en-IN");}
+    function itemNames(items){if(!Array.isArray(items))return "Order items";return items.map(i=>`${escapeHTML(i.name||"Product")} × ${Number(i.quantity)||1}`).join("<br>");}
+    async function load(){
+      if(!supabaseConfigured){say("Supabase configuration missing hai. supabase.js check karein.","error");return;}
+      const {data:{user},error:authError}=await supabase.auth.getUser();
+      if(authError||!user){say("Apne orders dekhne ke liye login karein. Guest orders Track My Order se track honge.");accountLink.textContent="Login / Sign up";return;}
+      accountLink.textContent="Logout"; accountLink.href="#"; accountLink.onclick=async e=>{e.preventDefault();await supabase.auth.signOut();location.href="login.html";};
+      const {data,error}=await supabase.from("orders").select("id,order_number,items,total,payment_method,payment_status,status,created_at,tracking_number,courier_name,shipped_at,delivered_at").eq("user_id",user.id).order("created_at",{ascending:false});
+      if(error){console.error(error);say("Orders load nahi hue: "+error.message,"error");return;}
+      if(!data?.length){say("Is account par abhi koi order nahi hai.");return;}
+      say(`${data.length} order(s) mile.`,"success");
+      list.innerHTML=data.map(o=>`<article class="order-item"><div class="order-head"><strong>Order #${escapeHTML(o.order_number??o.id)}</strong><span class="status">${escapeHTML(o.status||"Pending")}</span></div><p class="muted">Order date: ${escapeHTML(fmtDate(o.created_at))}</p><div class="items">${itemNames(o.items)}</div><div class="order-head"><span>Total</span><strong>${money(o.total)}</strong></div><p class="muted">Payment: ${escapeHTML(o.payment_method||"COD")} · ${escapeHTML(o.payment_status||"Pending")}</p>${o.tracking_number?`<p class="muted">Courier Tracking ID: ${escapeHTML(o.tracking_number)}</p>`:""}<div class="order-actions"><a class="btn-link" href="order.html?id=${encodeURIComponent(o.order_number??"")}">Track Order</a></div></article>`).join("");
+    }
+    load().catch(e=>{console.error(e);say("Unexpected error: "+(e.message||e),"error");});
+  </script>
+</body></html>

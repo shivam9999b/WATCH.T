@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0b0b">
+  <title>Track Your Order | WATCH.T </title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body { background:#f7f6f3; min-height:100vh; }
+    .order-page { max-width:800px; margin:40px auto; padding:20px; }
+    .order-card {
+      background:white; padding:25px; margin-top:20px;
+      border:1px solid #e5e0d6; border-radius:8px;
+    }
+    .order-card h2 { font-family:Georgia,serif; margin-top:0; }
+    .order-form { display:flex; gap:10px; }
+    .order-form input {
+      flex:1; min-width:0; padding:13px; border:1px solid #ddd;
+    }
+    .order-form button { margin:0; cursor:pointer; }
+    .order-row {
+      display:flex; justify-content:space-between; gap:15px;
+      padding:13px 0; border-bottom:1px solid #eee;
+    }
+    .status {
+      display:inline-block; padding:7px 12px;
+      background:#f5ead0; color:#79551c;
+      font-size:12px; font-weight:bold; border-radius:3px;
+    }
+    .muted { color:#777; font-size:13px; line-height:1.7; }
+    .error { color:#b42318; }
+    .success { color:#16794a; }
+    .order-progress { list-style:none; padding:0; margin:0; }
+    .order-progress li { display:flex; gap:12px; align-items:flex-start; padding:12px 0; color:#999; }
+    .order-progress li > span { display:grid; place-items:center; width:30px; height:30px; flex-shrink:0; border:1px solid #ccc; border-radius:50%; font-weight:bold; }
+    .order-progress li strong, .order-progress li small { display:block; }
+    .order-progress li small { margin-top:4px; font-size:12px; }
+    .order-progress li.done { color:#16794a; }
+    .order-progress li.done > span { background:#e5f5eb; border-color:#16794a; }
+    .order-progress li.current { color:#79551c; }
+    .order-progress li.current > span { background:#f5ead0; border-color:#b68a3a; }
+    @media(max-width:500px) {
+      .order-form { flex-direction:column; }
+      .order-form button { width:100%; }
+      .order-card { padding:18px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a class="logo" href="index.html">WATCH<span>.T</span></a>
+    <a href="index.html" style="color:white">← Shop</a>
+  </header>
+
+  <main class="order-page">
+    <p class="eyebrow">ALL WATCH CUSTOMER CARE</p>
+    <h1>Track Your Order</h1>
+    <p class="muted">Enter your 10-digit Tracking Number to check your order status.</p>
+
+    <section class="order-card">
+      <h2>Find Your Order</h2>
+      <form id="trackForm" class="order-form">
+        <input id="orderId" type="text" inputmode="numeric" pattern="[0-9]{10}"
+               minlength="10" maxlength="10" placeholder="10-digit Tracking Number" required
+               autocomplete="off" aria-label="10-digit tracking number">
+        <button class="gold-btn" type="submit">TRACK ORDER</button>
+      </form>
+      <p id="message" class="muted" aria-live="polite"></p>
+    </section>
+
+    <section id="orderResult" class="order-card" hidden>
+      <h2>Order Details</h2>
+      <div id="orderDetails"></div>
+      <h3 style="margin:22px 0 12px">Order Progress</h3>
+      <ol id="orderProgress" class="order-progress">
+        <li data-step="0"><span>1</span><div><strong>Order Placed</strong><small>We received your order.</small></div></li>
+        <li data-step="1"><span>2</span><div><strong>Confirmed</strong><small>Your order is confirmed.</small></div></li>
+        <li data-step="2"><span>3</span><div><strong>Shipped</strong><small>Your parcel is on its way.</small></div></li>
+        <li data-step="3"><span>4</span><div><strong>Delivered</strong><small>Your parcel has arrived.</small></div></li>
+      </ol>
+    </section>
+  </main>
+
+  <script type="module">
+    import { supabase, supabaseConfigured } from "./supabase.js";
+
+    const form = document.getElementById("trackForm");
+    const message = document.getElementById("message");
+    const result = document.getElementById("orderResult");
+    const details = document.getElementById("orderDetails");
+    const progress = document.getElementById("orderProgress");
+    const steps = ["Order Placed", "Confirmed", "Shipped", "Delivered"];
+
+    function addRow(label, value) {
+      if (value === null || value === undefined || value === "") return;
+      const row = document.createElement("div");
+      row.className = "order-row";
+      const name = document.createElement("span");
+      name.textContent = label;
+      const val = document.createElement("span");
+      val.textContent = String(value);
+      row.append(name, val);
+      details.appendChild(row);
+    }
+
+    function formatDate(value) {
+      if (!value) return "";
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? "" : date.toLocaleString("en-IN");
+    }
+
+    function renderProgress(status) {
+      const normalized = status === "Pending" ? "Order Placed" : status;
+      const currentIndex = steps.indexOf(normalized);
+      progress.hidden = normalized === "Cancelled";
+      progress.querySelectorAll("li").forEach((item, index) => {
+        item.classList.toggle("done", currentIndex >= 0 && index < currentIndex);
+        item.classList.toggle("current", currentIndex === index);
+      });
+      if (normalized === "Cancelled") addRow("Status", "Cancelled");
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      result.hidden = true;
+      details.replaceChildren();
+      message.className = "muted";
+
+      const rawNumber = document.getElementById("orderId").value.trim();
+      if (!/^\d{10}$/.test(rawNumber)) {
+        message.className = "error";
+        message.textContent = "Please 10-digit Tracking Number daalein.";
+        return;
+      }
+      if (!supabaseConfigured) {
+        message.className = "error";
+        message.textContent = "Supabase configuration missing hai. supabase.js check karein.";
+        return;
+      }
+
+      message.textContent = "Searching for your order...";
+      try {
+        const { data, error } = await supabase.rpc("track_order", {
+          p_order_number: rawNumber
+        });
+        if (error) throw error;
+
+        const order = Array.isArray(data) ? data[0] : data;
+        if (!order) {
+          message.className = "error";
+          message.textContent = "Order nahi mila. 10-digit Tracking Number check karein.";
+          return;
+        }
+
+        addRow("Tracking Number", order.order_number);
+        addRow("Last Updated", formatDate(order.updated_at));
+        addRow("Courier", order.courier_name);
+        addRow("Courier Tracking ID", order.tracking_number);
+        addRow("Shipped At", formatDate(order.shipped_at));
+        addRow("Delivered At", formatDate(order.delivered_at));
+
+        renderProgress(order.status || "Pending");
+        result.hidden = false;
+        message.className = "success";
+        message.textContent = "Order details found.";
+      } catch (error) {
+        console.error("Order tracking error:", error);
+        message.className = "error";
+        message.textContent = "Tracking load nahi hua. SQL RPC aur Supabase permissions check karein.";
+      }
+    });
+
+    const urlOrderNumber = new URLSearchParams(location.search).get("id");
+    if (urlOrderNumber) document.getElementById("orderId").value = urlOrderNumber;
+  </script>
+</body>
+</html>

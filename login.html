@@ -1,0 +1,431 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | WATCH.T </title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #090909;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 20px 7%;
+      border-bottom: 1px solid #292929;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      color: #d6b56d;
+      font-size: 25px;
+      font-weight: bold;
+      text-decoration: none;
+      letter-spacing: 2px;
+    }
+
+    .back {
+      color: #ddd;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back:hover {
+      color: #d6b56d;
+    }
+
+    main {
+      width: 100%;
+      max-width: 460px;
+      margin: auto;
+      padding: 35px 20px;
+    }
+
+    .login-box {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 16px;
+      padding: 30px 25px;
+      box-shadow: 0 15px 50px #000;
+    }
+
+    .watch-icon {
+      text-align: center;
+      font-size: 38px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 27px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #999;
+      text-align: center;
+      font-size: 14px;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 25px;
+      background: #080808;
+      padding: 5px;
+      border-radius: 9px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 12px 5px;
+      background: transparent;
+      color: #aaa;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .tab.active {
+      background: #d6b56d;
+      color: #111;
+      font-weight: bold;
+    }
+
+    .field {
+      margin-bottom: 17px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      color: #ddd;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      background: #090909;
+      color: #fff;
+      border: 1px solid #383838;
+      border-radius: 8px;
+      outline: none;
+      font-size: 15px;
+    }
+
+    input:focus {
+      border-color: #d6b56d;
+    }
+
+    .password-wrap {
+      position: relative;
+    }
+
+    .password-wrap input {
+      padding-right: 65px;
+    }
+
+    .show-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #d6b56d;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin: 4px 0 22px;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .remember input {
+      width: auto;
+      accent-color: #d6b56d;
+    }
+
+    .forgot {
+      color: #d6b56d;
+      text-decoration: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      background: #d6b56d;
+      color: #111;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background: #f0d18b;
+    }
+
+    .message {
+      display: none;
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 8px;
+      background: #241e10;
+      color: #f0d18b;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .terms {
+      text-align: center;
+      color: #777;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-top: 22px;
+    }
+
+    .terms a {
+      color: #d6b56d;
+      text-decoration: none;
+    }
+
+    footer {
+      text-align: center;
+      color: #777;
+      font-size: 12px;
+      padding: 20px;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 400px) {
+      .login-box {
+        padding: 25px 18px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <a href="index.html" class="logo">ALL WATCH</a>
+    <a href="index.html" class="back">← Back to Shop</a>
+  </header>
+
+  <main>
+    <section class="login-box">
+
+      <div class="watch-icon">⌚</div>
+      <h1 id="heading">Welcome Back</h1>
+      <p class="subtitle" id="subtitle">
+        Sign in to your All Watch account
+      </p>
+
+      <div class="tabs">
+        <button class="tab active" id="loginTab" type="button">
+          Login
+        </button>
+        <button class="tab" id="signupTab" type="button">
+          Create Account
+        </button>
+      </div>
+
+      <form id="authForm">
+
+        <div class="field" id="nameField" hidden>
+          <label for="fullName">Full Name</label>
+          <input
+            type="text"
+            id="fullName"
+            name="fullName"
+            placeholder="Enter your full name"
+            autocomplete="name"
+          >
+        </div>
+
+        <div class="field">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="password-wrap">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter password"
+              minlength="6"
+              autocomplete="current-password"
+              required
+            >
+            <button
+              class="show-password"
+              type="button"
+              id="togglePassword"
+            >Show</button>
+          </div>
+        </div>
+
+        <div class="field" id="confirmField" hidden>
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            placeholder="Re-enter password"
+            minlength="6"
+            autocomplete="new-password"
+          >
+        </div>
+
+        <div class="options" id="loginOptions">
+          <label class="remember">
+            <input type="checkbox" id="rememberMe">
+            Remember me
+          </label>
+          <a href="#" class="forgot" id="forgotLink">
+            Forgot password?
+          </a>
+        </div>
+
+        <button class="submit-btn" type="submit" id="submitBtn">
+          Login
+        </button>
+
+        <div class="message" id="message" role="status"></div>
+
+      </form>
+
+      <p class="terms">
+        By continuing, you agree to our
+        <a href="terms.html">Terms</a> and
+        <a href="privacy.html">Privacy Policy</a>.
+      </p>
+
+    </section>
+  </main>
+
+  <footer>
+    © 2026 All Watch. All rights reserved.
+  </footer>
+
+  <script type="module">
+    import { supabase, supabaseConfigured } from "./supabase.js";
+    const loginTab=document.getElementById("loginTab");
+    const signupTab=document.getElementById("signupTab");
+    const heading=document.getElementById("heading");
+    const subtitle=document.getElementById("subtitle");
+    const nameField=document.getElementById("nameField");
+    const confirmField=document.getElementById("confirmField");
+    const loginOptions=document.getElementById("loginOptions");
+    const submitBtn=document.getElementById("submitBtn");
+    const password=document.getElementById("password");
+    const confirmPassword=document.getElementById("confirmPassword");
+    const fullName=document.getElementById("fullName");
+    const message=document.getElementById("message");
+    const authForm=document.getElementById("authForm");
+    let mode="login";
+    function showMessage(text){message.textContent=text;message.style.display="block";}
+    function setMode(next){
+      mode=next; const signup=mode==="signup";
+      loginTab.classList.toggle("active",!signup);
+      signupTab.classList.toggle("active",signup);
+      nameField.hidden=!signup; confirmField.hidden=!signup; loginOptions.hidden=signup;
+      fullName.required=signup; confirmPassword.required=signup;
+      password.autocomplete=signup?"new-password":"current-password";
+      heading.textContent=signup?"Create Account":"Welcome Back";
+      subtitle.textContent=signup?"Join the All Watch family":"Sign in to your All Watch account";
+      submitBtn.textContent=signup?"Create Account":"Login";
+      message.style.display="none";
+    }
+    loginTab.addEventListener("click",()=>setMode("login"));
+    signupTab.addEventListener("click",()=>setMode("signup"));
+    document.getElementById("togglePassword").addEventListener("click",function(){
+      const hidden=password.type==="password"; password.type=hidden?"text":"password"; this.textContent=hidden?"Hide":"Show";
+    });
+    document.getElementById("forgotLink").addEventListener("click",async e=>{
+      e.preventDefault();
+      if(!supabaseConfigured){showMessage("Pehle supabase.js mein Project URL aur anon key set karo.");return;}
+      const email=document.getElementById("email").value.trim();
+      if(!email){showMessage("Password reset ke liye pehle email enter karo.");return;}
+      const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});
+      showMessage(error?error.message:"Password reset link email par bhej diya gaya. Inbox check karo.");
+    });
+    authForm.addEventListener("submit",async e=>{
+      e.preventDefault();
+      if(!supabaseConfigured){showMessage("Supabase connect nahi hai. supabase.js mein Project URL aur anon key add karo.");return;}
+      submitBtn.disabled=true; submitBtn.textContent="Please wait...";
+      try{
+        const email=document.getElementById("email").value.trim();
+        if(mode==="signup"){
+          if(password.value!==confirmPassword.value){showMessage("Passwords match nahi karte.");return;}
+          const {data,error}=await supabase.auth.signUp({
+            email,password:password.value,
+            options:{data:{full_name:fullName.value.trim()}}
+          });
+          if(error) throw error;
+          showMessage(data.session?"Account created. You are signed in.":"Account created. Email verification ke liye inbox check karo.");
+        }else{
+          const {error}=await supabase.auth.signInWithPassword({email,password:password.value});
+          if(error) throw error;
+          showMessage("Login successful. Redirecting...");
+          setTimeout(()=>location.href="my-orders.html",700);
+        }
+      }catch(err){showMessage(err.message||"Login failed.");}
+      finally{submitBtn.disabled=false;submitBtn.textContent=mode==="signup"?"Create Account":"Login";}
+    });
+    if(supabaseConfigured){
+      const {data}=await supabase.auth.getSession();
+      if(data.session){/* existing session retained */}
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0b0b">
+  <title>Product Details | WATCH.T</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body { background:#f7f6f3; }
+
+    .product-page {
+      max-width:1100px;
+      margin:40px auto;
+      padding:20px;
+    }
+
+    .breadcrumb {
+      margin-bottom:25px;
+      font-size:13px;
+      color:#777;
+    }
+
+    .breadcrumb a { color:#856124; }
+
+    .detail-layout {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:45px;
+      align-items:start;
+      background:white;
+      padding:30px;
+      border:1px solid #e9e4da;
+    }
+
+    .main-image {
+      width:100%;
+      height:440px;
+      object-fit:cover;
+      background:#eee;
+    }
+
+    .detail-category {
+      color:#92703a;
+      text-transform:uppercase;
+      letter-spacing:2px;
+      font-size:11px;
+      font-weight:bold;
+    }
+
+    .detail-info h1 {
+      font:500 clamp(28px,4vw,42px)/1.2 Georgia,serif;
+      margin:15px 0;
+    }
+
+    .detail-rating { color:#a37a29; font-size:14px; }
+
+    .detail-price {
+      margin:22px 0;
+      font-size:27px;
+      font-weight:bold;
+    }
+
+    .detail-price del {
+      color:#999;
+      font-size:16px;
+      font-weight:normal;
+      margin-left:10px;
+    }
+
+    .detail-description {
+      color:#666;
+      line-height:1.8;
+      font-size:14px;
+    }
+
+    .detail-label {
+      display:block;
+      margin:22px 0 10px;
+      font-size:13px;
+      font-weight:bold;
+    }
+
+    .quantity-control {
+      display:flex;
+      align-items:center;
+      gap:15px;
+    }
+
+    .quantity-control button {
+      width:38px;
+      height:38px;
+      background:white;
+      border:1px solid #ddd;
+      font-size:18px;
+    }
+
+    #quantity {
+      min-width:20px;
+      text-align:center;
+    }
+
+    .detail-buttons {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:25px;
+    }
+
+    .detail-buttons button,
+    .detail-buttons a {
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      min-height:48px;
+      padding:12px;
+      font-size:11px;
+      font-weight:bold;
+      letter-spacing:.5px;
+    }
+
+    .add-cart {
+      background:var(--gold);
+      border:1px solid var(--gold);
+      color:#111;
+    }
+
+    .buy-now {
+      background:#111;
+      border:1px solid #111;
+      color:white;
+    }
+
+    .detail-note {
+      color:#888;
+      font-size:12px;
+      line-height:1.7;
+      margin-top:20px;
+    }
+
+    @media(max-width:700px) {
+      .product-page { margin:20px auto; padding:12px; }
+      .detail-layout { grid-template-columns:1fr; gap:25px; padding:17px; }
+      .main-image { height:300px; }
+      .detail-buttons { grid-template-columns:1fr; }
+    }
+  
+.product-gallery{min-width:0}
+.main-image{display:block;width:100%;height:440px;object-fit:contain;background:#f3f1ed;border:1px solid #eee}
+.thumbnail-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:10px}
+.product-thumbnail{width:100%;height:72px;object-fit:cover;background:#f3f1ed;border:1px solid #ddd;cursor:pointer;border-radius:4px}
+.product-thumbnail.active{border:2px solid var(--gold)}
+@media(max-width:700px){.main-image{height:300px}.thumbnail-grid{gap:5px}.product-thumbnail{height:54px}}
+</style>
+</head>
+
+<body>
+  <header class="header">
+    <a class="logo" href="index.html">ALL<span>WATCH</span></a>
+    <a href="cart.html" style="color:white">🛒 View Cart</a>
+  </header>
+
+  <main class="product-page">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a> /
+      <a href="index.html#products">Shop</a> /
+      <span id="breadcrumbName">Product</span>
+    </div>
+
+    <section class="detail-layout">
+      <div class="product-gallery">
+        <img id="productImage" class="main-image" src="" alt="Product image">
+        <div id="productThumbnails" class="thumbnail-grid" aria-label="Product images"></div>
+      </div>
+
+      <div class="detail-info">
+        <p class="detail-category" id="productCategory"></p>
+        <h1 id="productName">Loading product...</h1>
+        <div class="detail-rating">★★★★☆ <span style="color:#777">Sample rating</span></div>
+
+        <div class="detail-price">
+          <span id="productPrice"></span>
+          <del id="oldPrice"></del>
+        </div>
+
+        <p class="detail-description" id="productDescription"></p>
+
+        <label class="detail-label" for="quantity">Quantity</label>
+        <div class="quantity-control">
+          <button id="minusQty" type="button" aria-label="Decrease quantity">−</button>
+          <span id="quantity">1</span>
+          <button id="plusQty" type="button" aria-label="Increase quantity">+</button>
+        </div>
+
+        <div class="detail-buttons">
+          <button class="add-cart" id="addToCart">ADD TO CART +</button>
+          <a class="buy-now" href="cart.html" id="buyNow">BUY NOW →</a>
+        </div>
+
+        <p class="detail-note">
+          Sample product information. Verify the actual product, price,
+          availability and warranty before accepting real orders.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module">
+    import { supabase, supabaseConfigured, money, escapeHTML } from "./supabase.js";
+    const demoProducts=[
+      {id:1,name:"Classic Men's Watch",category:"Men",price:1499,old_price:1999,image_url:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=85",description:"A classic everyday watch design."},
+      {id:2,name:"Elegant Women's Watch",category:"Women",price:1299,old_price:1799,image_url:"https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&w=900&q=85",description:"An elegant watch style for everyday wear."},
+      {id:3,name:"Modern Smart Watch",category:"Smart Watch",price:2499,old_price:2999,image_url:"https://images.unsplash.com/photo-1544117519-31a4b719223d?auto=format&fit=crop&w=900&q=85",description:"A modern smartwatch style."},
+      {id:4,name:"Premium Luxury Watch",category:"Luxury",price:3999,old_price:4999,image_url:"https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=900&q=85",description:"A premium-inspired design."},
+      {id:5,name:"Minimal Wall Clock",category:"Wall Clock",price:999,old_price:1299,image_url:"https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=900&q=85",description:"A simple clock for your home or office."},
+      {id:6,name:"Watch Accessories",category:"Accessories",price:499,old_price:699,image_url:"https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=900&q=85",description:"Accessories to complement your watch."},
+      {id:7,name:"Everyday Men's Watch",category:"Men",price:1799,old_price:2299,image_url:"https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=900&q=85",description:"A versatile everyday style."},
+      {id:8,name:"Premium Ladies Watch",category:"Women",price:1599,old_price:1999,image_url:"https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=900&q=85",description:"A refined style for your collection."}
+    ];
+    const params=new URLSearchParams(location.search);
+    const productId=params.get("id")||"1";
+    let product=null,quantity=1;
+    const toast=document.getElementById("toast");
+    function renderGallery(p){
+      const main=document.getElementById("productImage"), thumbs=document.getElementById("productThumbnails");
+      const raw=Array.isArray(p.image_urls)?p.image_urls:(Array.isArray(p.images)?p.images:[]);
+      const urls=[...new Set([...raw,p.image_url||p.image].filter(x=>typeof x==="string"&&x.trim()))].slice(0,6);
+      thumbs.replaceChildren();
+      if(!urls.length){main.removeAttribute("src");return;}
+      main.src=urls[0];main.alt=(p.name||"Product")+" image";
+      urls.forEach((url,index)=>{
+        const button=document.createElement("button");button.type="button";button.className="thumbnail-button";button.setAttribute("aria-label",`Show image ${index+1}`);
+        const img=document.createElement("img");img.className="product-thumbnail"+(index===0?" active":"");img.src=url;img.alt=`${p.name||"Product"} image ${index+1}`;
+        button.appendChild(img);
+        button.addEventListener("click",()=>{main.src=url;thumbs.querySelectorAll("img").forEach(item=>item.classList.toggle("active",item===img));});
+        thumbs.appendChild(button);
+      });
+    }
+    function showToast(text){toast.textContent=text;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),2200);}
+    async function loadProduct(){
+      if(supabaseConfigured){
+        const {data,error}=await supabase.from("products").select("*").eq("id",productId).eq("active",true).maybeSingle();
+        if(!error&&data)product=data;
+      }
+      if(!product)product=demoProducts.find(p=>String(p.id)===String(productId));
+      if(!product){
+        document.getElementById("productName").textContent="Product not found";
+        document.getElementById("productDescription").textContent="Please return to the shop and select a product.";
+        document.getElementById("addToCart").disabled=true;document.getElementById("buyNow").hidden=true;return;
+      }
+      document.title=product.name+" | WATCH.T";
+      document.getElementById("breadcrumbName").textContent=product.name;
+      document.getElementById("productCategory").textContent=product.category;
+      document.getElementById("productName").textContent=product.name;
+      renderGallery(product);
+      document.getElementById("productPrice").textContent=money(product.price);
+      document.getElementById("oldPrice").textContent=money(product.old_price??product.oldPrice??product.price);
+      document.getElementById("productDescription").textContent=product.description||"Discover this WATCH.T design.";
+    }
+    function updateQuantity(){document.getElementById("quantity").textContent=quantity;}
+    document.getElementById("minusQty").addEventListener("click",()=>{if(quantity>1)quantity--;updateQuantity();});
+    document.getElementById("plusQty").addEventListener("click",()=>{if(quantity<10)quantity++;updateQuantity();});
+    function addProductToCart(){
+      if(!product)return;
+      let cart=[];try{cart=JSON.parse(localStorage.getItem("allWatchCart")||"[]");if(!Array.isArray(cart))cart=[];}catch{cart=[];}
+      const existing=cart.find(i=>String(i.id)===String(product.id));
+      if(existing)existing.quantity=Math.min(99,Number(existing.quantity||0)+quantity);
+      else cart.push({id:product.id,name:product.name,category:product.category,price:Number(product.price),image:product.image_url||product.image,quantity});
+      localStorage.setItem("allWatchCart",JSON.stringify(cart));showToast("Added to cart!");
+    }
+    document.getElementById("addToCart").addEventListener("click",addProductToCart);
+    document.getElementById("buyNow").addEventListener("click",e=>{if(!product){e.preventDefault();return;}addProductToCart();});
+    loadProduct();
+  </script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0b0b">
+  <title> WATCH.T | Premium Watches</title>
+  <meta name="description" content="Explore watches for men, women and smart watch lovers at WATCH.T.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .product-price del { color:#888; margin-left:7px; font-size:.88em; }
+    .discount-badge { display:inline-block; margin-left:7px; padding:3px 6px; border-radius:4px; background:#f8e8c5; color:#78531a; font-size:11px; font-weight:700; }
+  </style>
+
+</head>
+<body>
+
+<header class="header">
+  <a class="logo" href="#">WATCH<span>.T</span></a>
+
+  <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+
+  <nav id="nav">
+    <a href="#home">Home</a>
+    <a href="#categories">Categories</a>
+    <a href="#products">Shop</a>
+    <a href="#about">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="order.html">Track My Order</a>
+    <a href="my-orders.html">My Order</a>
+    <a href="login.html">Login</a>
+  </nav>
+
+  <div class="header-actions">
+    <button id="searchBtn" aria-label="Search">⌕</button>
+    <button id="cartBtn" aria-label="Open cart">🛒 <span id="cartCount">0</span></button>
+  </div>
+</header>
+
+<div class="search-box" id="searchBox">
+  <input id="searchInput" type="search" placeholder="Search watches...">
+  <button id="closeSearch">✕</button>
+</div>
+
+<main>
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <p class="eyebrow">TIMELESS STYLE · PREMIUM COLLECTION</p>
+      <h1>TIME FOR A<br><span>BETTER YOU.</span></h1>
+      <p class="hero-text">
+        Discover watches that match your style. Every second tells your story.
+      </p>
+      <a class="gold-btn" href="#products">EXPLORE COLLECTION →</a>
+      <div class="hero-note">ELEGANCE IN EVERY SECOND</div>
+    </div>
+    <div class="hero-image">
+      <img
+        src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=1000&q=85"
+        alt="Premium wristwatch"
+      >
+    </div>
+  </section>
+
+  <section class="section categories-section" id="categories">
+    <div class="section-heading">
+      <p class="eyebrow">FIND YOUR STYLE</p>
+      <h2>Shop by <span>Category</span></h2>
+    </div>
+
+    <div class="category-grid">
+      <button class="category-card" data-category="Men">
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80" alt="Men's watch">
+        <span>Men</span>
+      </button>
+      <button class="category-card" data-category="Women">
+        <img src="https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&w=500&q=80" alt="Women'l watch">
+        <span>Women</span>
+      </button>
+      <button class="category-card" data-category="Smart Watch">
+        <img src="https://images.unsplash.com/photo-1544117519-31a4b719223d?auto=format&fit=crop&w=500&q=80" alt="Smart watch">
+        <span>Smart Watch</span>
+      </button>
+      <button class="category-card" data-category="Luxury">
+        <img src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=500&q=80" alt="Luxury watch">
+        <span>Luxury</span>
+      </button>
+      <button class="category-card" data-category="Wall Clock">
+        <img src="https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=500&q=80" alt="Wall clock">
+        <span>Wall Clock</span>
+      </button>
+      <button class="category-card" data-category="Accessories">
+        <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=500&q=80" alt="Watch accessories">
+        <span>Accessories</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="section products-section" id="products">
+    <div class="section-heading">
+      <p class="eyebrow">OUR SELECTION</p>
+      <h2>Featured <span>Products</span></h2>
+      <p>Find the right timepiece for every occasion.</p>
+    </div>
+
+    <div class="filters">
+      <button class="filter-btn active" data-category="All">All</button>
+      <button class="filter-btn" data-category="Men">Men</button>
+      <button class="filter-btn" data-category="Women">Women</button>
+      <button class="filter-btn" data-category="Smart Watch">Smart Watch</button>
+      <button class="filter-btn" data-category="Luxury">Luxury</button>
+      <button class="filter-btn" data-category="Wall Clock">Wall Clock</button>
+      <button class="filter-btn" data-category="Accessories">Accessories</button>
+    </div>
+
+    <div class="product-grid" id="productGrid"></div>
+    <p class="empty-message" id="emptyMessage" hidden>No products found.</p>
+  </section>
+
+  <section class="benefits">
+    <div><span>✦</span><h3>Quality Products</h3><p>Carefully selected styles</p></div>
+    <div><span>🚚</span><h3>Shipping</h3><p>Shipping details at checkout</p></div>
+    <div><span>🔒</span><h3>Secure Shopping</h3><p>Protected checkout planned</p></div>
+    <div><span>↺</span><h3>Customer Support</h3><p>We are here to help</p></div>
+  </section>
+
+  <section class="promo section" id="about">
+    <div>
+      <p class="eyebrow">THE LUXURY EDIT</p>
+      <h2>Make Every<br>Second <span>Count.</span></h2>
+      <p>Discover a style that feels like you.</p>
+      <a class="gold-btn" href="#products">SHOP NOW →</a>
+    </div>
+    <img src="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=900&q=85" alt="Elegant watch collection">
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="footer-main">
+    <div>
+      <a class="logo" href="#">ALL<span>WATCH</span></a>
+      <p>Timepieces for every style and every moment.</p>
+    </div>
+    <div>
+      <h3>Quick Links</h3>
+      <a href="#home">Home</a>
+      <a href="#products">Shop</a>
+      <a href="#categories">Categories</a>
+    </div>
+    <div>
+      <h3>Customer Care</h3>
+      <a href="contact.html">Contact Us</a>
+      <a href="shopping.html">Shipping Policy</a>
+      <a href="Return Policy .html">Return Policy</a>
+    </div>
+  </div>
+  <div class="copyright">© <span id="year"></span> WATCH.T. ALL rights reserved.</div>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="cart-panel" id="cartPanel" aria-label="Shopping cart">
+  <div class="cart-heading">
+    <h2>Your Cart</h2>
+    <button id="closeCart" aria-label="Close cart">✕</button>
+  </div>
+  <div id="cartItems"></div>
+  <div class="cart-bottom">
+    <p>Total <strong id="cartTotal">₹0</strong></p>
+    <button class="gold-btn checkout-btn" id="checkoutBtn">CONTINUE TO CHECKOUT</button>
+    <small>Demo cart only. Checkout is not connected yet.</small>
+  </div>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

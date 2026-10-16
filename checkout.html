@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | WATCH.T</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background:#f7f6f3; }
+    .checkout-wrap { max-width:900px; margin:40px auto; padding:20px; }
+    .checkout-box { background:white; padding:24px; margin-bottom:20px; border:1px solid #e5e0d6; }
+    .checkout-box h2 { font-family:Georgia,serif; margin-top:0; }
+    .checkout-form { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+    .checkout-form input, .checkout-form textarea, .checkout-form select {
+      width:100%; padding:13px; border:1px solid #ddd; border-radius:3px;
+    }
+    .checkout-form textarea { min-height:90px; grid-column:1/-1; }
+    .checkout-form .full { grid-column:1/-1; }
+    .checkout-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee; }
+    .checkout-submit { width:100%; }
+    .back-link { display:inline-block; margin-bottom:20px; color:#77551b; }
+    @media(max-width:550px) {
+      .checkout-form { grid-template-columns:1fr; }
+      .checkout-form textarea, .checkout-form .full { grid-column:auto; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a class="logo" href="index.html">WATCH<span>.T</span></a>
+    <a href="index.html" style="color:white">← Continue Shopping</a>
+  </header>
+
+  <main class="checkout-wrap">
+    <a class="back-link" href="index.html">← Back to shop</a>
+    <h1>Checkout</h1>
+
+    <section class="checkout-box">
+      <h2>Your Order</h2>
+      <div id="orderItems"></div>
+      <div class="checkout-row"><span>Total</span><strong id="orderTotal">₹0</strong></div>
+    </section>
+
+    <section class="checkout-box">
+      <h2>Delivery Details</h2>
+      <form id="checkoutForm" class="checkout-form">
+        <input name="name" placeholder="Full Name" required>
+        <input name="phone" type="tel" placeholder="Mobile Number" pattern="[0-9]{10}" maxlength="10" required>
+        <input name="email" type="email" placeholder="Email (optional)">
+        <input name="pincode" inputmode="numeric" placeholder="PIN Code" pattern="[0-9]{6}" maxlength="6" required>
+        <input name="city" placeholder="City" required>
+        <input name="state" placeholder="State" required>
+        <textarea name="address" placeholder="Full delivery address" required></textarea>
+
+        <select name="payment" class="full" required>
+          <option value="">Choose payment method</option>
+          <option value="COD">Cash on Delivery (COD)</option>
+          <option value="ONLINE">Online Payment (coming soon)</option>
+        </select>
+
+        <button class="gold-btn checkout-submit full" type="submit">
+          PLACE ORDER
+        </button>
+      </form>
+      <p style="font-size:12px;color:#777">
+        Online payment is not enabled yet. COD orders are saved when Supabase is configured correctly.
+      </p>
+    </section>
+  </main>
+
+  <script type="module">
+    import { supabase, supabaseConfigured, money, escapeHTML } from "./supabase.js";
+    function readCart(){
+      try { const c=JSON.parse(localStorage.getItem("allWatchCart")||"[]"); return Array.isArray(c)?c:[]; }
+      catch{return [];}
+    }
+    let cart=readCart();
+    const itemsEl=document.getElementById("orderItems");
+    const submitBtn=document.querySelector("#checkoutForm button[type=submit]");
+    function render(){
+      itemsEl.innerHTML=cart.length?cart.map(i=>`<div class="checkout-row"><span>${escapeHTML(i.name)} × ${Number(i.quantity)}</span><strong>${money(Number(i.price)*Number(i.quantity))}</strong></div>`).join(""):"<p>Your cart is empty.</p>";
+      document.getElementById("orderTotal").textContent=money(cart.reduce((s,i)=>s+Number(i.price)*Number(i.quantity),0));
+      if(!cart.length)submitBtn.disabled=true;
+    }
+    render();
+    document.getElementById("checkoutForm").addEventListener("submit",async event=>{
+      event.preventDefault();
+      if(!cart.length){alert("Your cart is empty.");return;}
+      if(!supabaseConfigured){alert("Supabase connected nahi hai. supabase.js mein Project URL aur anon key set karo.");return;}
+      const formData=new FormData(event.currentTarget);
+      if(formData.get("payment")==="ONLINE"){alert("Online payment abhi connected nahi hai. Filhaal COD select karo.");return;}
+      submitBtn.disabled=true;submitBtn.textContent="Placing order...";
+      try{
+        const {data:{user}}=await supabase.auth.getUser();
+        const items=cart.map(i=>({product_id:i.id,name:String(i.name),price:Number(i.price),quantity:Number(i.quantity),image_url:i.image||null}));
+        const total=items.reduce((sum,i)=>sum+i.price*i.quantity,0);
+        const payload={
+          user_id:user?.id||null,
+          customer_name:String(formData.get("name")).trim(),
+          phone:String(formData.get("phone")).trim(),
+          email:String(formData.get("email")||"").trim()||null,
+          pincode:String(formData.get("pincode")).trim(),
+          city:String(formData.get("city")).trim(),
+          state:String(formData.get("state")).trim(),
+          address:String(formData.get("address")).trim(),
+          items,total,payment_method:"COD",payment_status:"Pending",status:"Pending"
+        };
+        const {data,error}=await supabase.from("orders").insert(payload).select("id,order_number").single();
+        if(error)throw error;
+        localStorage.removeItem("allWatchCart");
+        if (data.order_number == null) {
+          throw new Error("Order number generate nahi hua. Supabase order_number column/default check karo.");
+        }
+        location.href="order.html?id="+encodeURIComponent(data.order_number);
+      }catch(err){
+        alert("Order place nahi hua: "+(err.message||"Unknown error")+". Database schema/RLS policies check karo.");
+      }finally{submitBtn.disabled=false;submitBtn.textContent="PLACE ORDER";}
+    });
+  </script>
+</body>
+</html>

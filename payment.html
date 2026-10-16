@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Secure Checkout | WATCH.T</title>
+
+  <link rel="stylesheet" href="payment.css">
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+
+<body>
+
+<header class="header">
+  <a href="index.html" class="logo">
+    keshari<span>WATCH</span>
+  </a>
+
+  <span class="secure">🔒 Secure Checkout</span>
+</header>
+
+<main class="container">
+
+  <div class="page-title">
+    <p class="eyebrow">PREMIUM WATCHES</p>
+    <h1>Checkout</h1>
+    <p>Complete your order securely.</p>
+  </div>
+
+  <div class="checkout-grid">
+
+    <!-- Customer Details -->
+    <section class="panel">
+      <h2>Delivery Details</h2>
+
+      <form id="paymentForm">
+
+        <label for="customerName">Full Name</label>
+        <input
+          type="text"
+          id="customerName"
+          required
+          maxlength="100"
+          placeholder="Enter your full name"
+        >
+
+        <label for="customerPhone">Mobile Number</label>
+        <input
+          type="tel"
+          id="customerPhone"
+          required
+          pattern="[6-9][0-9]{9}"
+          maxlength="10"
+          placeholder="10-digit mobile number"
+        >
+
+        <label for="customerEmail">Email Address</label>
+        <input
+          type="email"
+          id="customerEmail"
+          required
+          maxlength="150"
+          placeholder="Enter your email"
+        >
+
+        <label for="customerAddress">Full Delivery Address</label>
+        <textarea
+          id="customerAddress"
+          required
+          maxlength="500"
+          rows="4"
+          placeholder="House number, street, city, state, PIN code"
+        ></textarea>
+
+        <h2 class="payment-heading">Payment Method</h2>
+
+        <label class="payment-option">
+          <input
+            type="radio"
+            name="paymentMethod"
+            value="razorpay"
+            checked
+          >
+          <span>
+            <strong>Online Payment</strong>
+            <small>UPI, Cards and other supported methods</small>
+          </span>
+        </label>
+
+        <label class="payment-option">
+          <input
+            type="radio"
+            name="paymentMethod"
+            value="qr"
+          >
+          <span>
+            <strong>Pay using UPI QR</strong>
+            <small>Scan with your UPI app</small>
+          </span>
+        </label>
+
+        <button type="submit" class="pay-btn" id="payButton">
+          CONTINUE TO PAYMENT
+        </button>
+
+        <p class="security-note">
+          🔒 Never share your UPI PIN or OTP with anyone.
+        </p>
+
+      </form>
+    </section>
+
+    <!-- Order Summary -->
+    <aside class="panel order-panel">
+
+      <h2>Your Order</h2>
+
+      <div id="orderItems"></div>
+
+      <div class="price-row">
+        <span>Subtotal</span>
+        <strong id="subtotal">₹0</strong>
+      </div>
+
+      <div class="price-row">
+        <span>Delivery</span>
+        <strong id="shipping">FREE</strong>
+      </div>
+
+      <div class="price-row total">
+        <span>Total Amount</span>
+        <strong id="total">₹0</strong>
+      </div>
+
+      <p class="order-note">
+        Please check your order before proceeding.
+      </p>
+
+    </aside>
+
+  </div>
+</main>
+
+<!-- UPI QR Modal -->
+<div class="modal" id="qrModal" aria-hidden="true">
+
+  <div class="modal-content">
+
+    <button class="close-btn" id="closeQR" aria-label="Close">
+      &times;
+    </button>
+
+    <p class="eyebrow">UPI PAYMENT</p>
+
+    <h2>Scan & Pay</h2>
+
+    <p>Amount to pay:</p>
+
+    <h3 id="qrAmount">₹0</h3>
+
+    <img
+      id="qrImage"
+      src="images/payment-qr.png"
+      alt="Merchant UPI QR Code"
+    >
+
+    <p class="qr-instruction">
+      Scan this QR using Google Pay, PhonePe, Paytm or another
+      supported UPI app.
+    </p>
+
+    <p class="warning">
+      Your order will remain pending until payment is verified.
+    </p>
+
+    <button class="pay-btn" id="paymentDone">
+      I HAVE MADE THE PAYMENT
+    </button>
+
+    <p id="qrMessage" role="status"></p>
+
+  </div>
+</div>
+
+<footer>
+  <p>© <span id="year"></span> keshariWATCH</p>
+  <p>Premium Watches · Secure Checkout</p>
+</footer>
+
+<script src="payment.js"></script>
+
+</body>
+</html>

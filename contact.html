@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111827">
+
+  <title>Contact Us | WATCH.T</title>
+  <meta name="description" content="Contact All Watch for order inquiries, delivery questions, product information, and customer support.">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f5f7fb;
+      color: #202938;
+      font-family: Arial, sans-serif;
+      line-height: 1.7;
+    }
+
+    .policy-header {
+      background: #111827;
+      color: white;
+      padding: 22px 16px;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand {
+      color: white;
+      text-decoration: none;
+      font-size: 23px;
+      font-weight: bold;
+    }
+
+    .back-link {
+      color: white;
+      text-decoration: none;
+      border: 1px solid #64748b;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+
+    .contact-container {
+      max-width: 900px;
+      margin: 35px auto;
+      padding: 0 16px;
+    }
+
+    .contact-card {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 5px 24px rgba(0,0,0,.06);
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #111827;
+      font-size: 30px;
+      line-height: 1.3;
+    }
+
+    h2 {
+      color: #111827;
+      font-size: 20px;
+      margin-top: 25px;
+    }
+
+    p {
+      color: #4b5563;
+      font-size: 15px;
+    }
+
+    .contact-info {
+      background: #f9fafb;
+      border-radius: 10px;
+      padding: 18px;
+      margin: 20px 0;
+    }
+
+    .contact-info a {
+      color: #2563eb;
+      overflow-wrap: anywhere;
+      text-decoration: none;
+    }
+
+    .contact-form {
+      margin-top: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 17px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #374151;
+      font-size: 14px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: 2px solid #93c5fd;
+      border-color: #2563eb;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: #111827;
+      color: white;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background: #2563eb;
+    }
+
+    .submit-btn:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+    }
+
+    #formStatus {
+      padding: 0;
+      margin-top: 15px;
+      overflow-wrap: anywhere;
+    }
+
+    .policy-footer {
+      text-align: center;
+      color: #6b7280;
+      padding: 20px 15px 30px;
+      font-size: 13px;
+    }
+
+    .policy-footer a {
+      color: #2563eb;
+      text-decoration: none;
+      margin: 0 6px;
+    }
+
+    @media (max-width: 600px) {
+      .contact-container {
+        margin: 20px auto;
+      }
+
+      .contact-card {
+        padding: 20px 17px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+
+      .brand {
+        font-size: 20px;
+      }
+
+      .back-link {
+        padding: 7px 9px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="policy-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">Watch.T</a>
+      <a class="back-link" href="index.html">← Back to Home</a>
+    </div>
+  </header>
+
+  <main class="contact-container">
+    <section class="contact-card">
+
+      <h1>Contact Us</h1>
+
+      <p>
+        We are happy to help! If you have questions about our products,
+        orders, shipping, returns, or payments, please contact us.
+      </p>
+
+      <div class="contact-info">
+        <h2>Customer Support</h2>
+
+        <p><strong>Website:</strong>  Watch.T</p>
+
+        <p>
+          <strong>Email:</strong>
+          <strong>shivamkeshari578@gmail.com</strong>
+
+        <p>
+          <strong>Support Hours:</strong>
+          Monday to Saturday, 10:00 AM – 6:00 PM
+        </p>
+      </div>
+
+      <h2>Send Us a Message</h2>
+
+      <form class="contact-form" id="contactForm">
+
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            maxlength="100"
+            placeholder="Enter your full name"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            maxlength="254"
+            placeholder="Enter your email address"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <select id="subject" name="subject" required>
+            <option value="">Select a subject</option>
+            <option value="Order Inquiry">Order Inquiry</option>
+            <option value="Shipping">Shipping and Delivery</option>
+            <option value="Return">Return or Refund</option>
+            <option value="Product Information">Product Information</option>
+            <option value="Payment">Payment Issue</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Your Message</label>
+          <textarea
+            id="message"
+            name="message"
+            maxlength="5000"
+            placeholder="Write your message here..."
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          Send Message
+        </button>
+
+        <p id="formStatus" role="status" aria-live="polite"></p>
+
+      </form>
+
+    </section>
+  </main>
+
+  <footer class="policy-footer">
+    <p>© 2026  Watch.T. All rights reserved.</p>
+    <a href="index.html">Home</a>
+    <a href="shipping.html">Shipping Policy</a>
+    <a href="privacy-policy.html">Privacy Policy</a>
+    <a href="Return Policy .html">Return Policy</a>
+    <a href="contact.html">Contact Us</a>
+  </footer>
+
+  <script>
+    // STEP 1: Replace these with your Supabase project credentials.
+    const SUPABASE_URL = "https://hkumrjqggmnybaglfkuv.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_Vb0ej7A7K1EIFRXbxhIXMQ_q57LxWQs";
+
+    const form = document.getElementById("contactForm");
+    const statusBox = document.getElementById("formStatus");
+    const submitButton = form.querySelector('button[type="submit"]');
+
+    let supabaseClient = null;
+
+    // Initialize Supabase safely.
+    try {
+      if (
+        window.supabase &&
+        SUPABASE_URL !== "YOUR_SUPABASE_URL" &&
+        SUPABASE_KEY !== "YOUR_SUPABASE_ANON_KEY"
+      ) {
+        supabaseClient = window.supabase.createClient(
+          SUPABASE_URL,
+          SUPABASE_KEY
+        );
+      }
+    } catch (error) {
+      console.error("Supabase initialization error:", error);
+    }
+
+    function showStatus(message, success) {
+      statusBox.textContent = message;
+      statusBox.style.color = success ? "#15803d" : "#dc2626";
+    }
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      if (!form.reportValidity()) return;
+
+      if (!supabaseClient) {
+        showStatus(
+          "Supabase is not configured. Please check your project URL and public key.",
+          false
+        );
+        return;
+      }
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const subject = document.getElementById("subject").value;
+      const message = document.getElementById("message").value.trim();
+
+      if (
+        !name ||
+        name.length > 100 ||
+        !email ||
+        email.length > 254 ||
+        !subject ||
+        !message ||
+        message.length > 5000
+      ) {
+        showStatus("Please check your details and try again.", false);
+        return;
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending...";
+      showStatus("", false);
+
+      try {
+        const { error } = await supabaseClient
+          .from("contact_messages")
+          .insert({
+            name: name,
+            email: email,
+            subject: subject,
+            message: message
+          });
+
+        if (error) {
+          console.error("Supabase submission error:", error);
+          throw error;
+        }
+
+        showStatus(
+          "Thank you! Your message has been submitted successfully.",
+          true
+        );
+
+        form.reset();
+
+      } catch (error) {
+        showStatus(
+          "Message could not be sent. Please try again later.",
+          false
+        );
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Send Message";
+      }
+    });
+  </script>
+
+</body>
+</html>

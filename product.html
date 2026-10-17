@@ -1,281 +1,892 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b0b0b">
-  <title>Product Details | WATCH.T</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0b0b">
+<title>Product Details | WATCH.T</title>
+<link rel="stylesheet" href="style.css">
 
-  <style>
-    body { background:#f7f6f3; }
+<style>
+body {
+  background: #f7f6f3;
+  margin: 0;
+  color: #202020;
+  font-family: Arial, sans-serif;
+}
 
-    .product-page {
-      max-width:1100px;
-      margin:40px auto;
-      padding:20px;
-    }
+.product-page {
+  max-width: 1250px;
+  margin: 24px auto;
+  padding: 0 18px;
+}
 
-    .breadcrumb {
-      margin-bottom:25px;
-      font-size:13px;
-      color:#777;
-    }
+.breadcrumb {
+  margin-bottom: 18px;
+  font-size: 13px;
+  color: #777;
+}
 
-    .breadcrumb a { color:#856124; }
+.breadcrumb a {
+  color: #856124;
+  text-decoration: none;
+}
 
-    .detail-layout {
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:45px;
-      align-items:start;
-      background:white;
-      padding:30px;
-      border:1px solid #e9e4da;
-    }
+.detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 30px;
+  background: white;
+  border: 1px solid #e9e4da;
+  padding: 25px;
+  align-items: start;
+}
 
-    .main-image {
-      width:100%;
-      height:440px;
-      object-fit:cover;
-      background:#eee;
-    }
+.product-gallery {
+  min-width: 0;
+}
 
-    .detail-category {
-      color:#92703a;
-      text-transform:uppercase;
-      letter-spacing:2px;
-      font-size:11px;
-      font-weight:bold;
-    }
+.main-image {
+  display: block;
+  width: 100%;
+  height: 440px;
+  object-fit: contain;
+  background: #f3f1ed;
+  border: 1px solid #eee;
+}
 
-    .detail-info h1 {
-      font:500 clamp(28px,4vw,42px)/1.2 Georgia,serif;
-      margin:15px 0;
-    }
+.thumbnail-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
 
-    .detail-rating { color:#a37a29; font-size:14px; }
+.thumbnail-button {
+  padding: 0;
+  background: white;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  min-width: 0;
+}
 
-    .detail-price {
-      margin:22px 0;
-      font-size:27px;
-      font-weight:bold;
-    }
+.product-thumbnail {
+  display: block;
+  width: 100%;
+  height: 65px;
+  object-fit: contain;
+}
 
-    .detail-price del {
-      color:#999;
-      font-size:16px;
-      font-weight:normal;
-      margin-left:10px;
-    }
+.thumbnail-button.active {
+  border: 2px solid var(--gold, #a37a29);
+}
 
-    .detail-description {
-      color:#666;
-      line-height:1.8;
-      font-size:14px;
-    }
+.detail-category {
+  color: #92703a;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 11px;
+  font-weight: bold;
+}
 
-    .detail-label {
-      display:block;
-      margin:22px 0 10px;
-      font-size:13px;
-      font-weight:bold;
-    }
+.detail-info h1 {
+  font: 500 clamp(26px, 3vw, 38px)/1.25 Georgia, serif;
+  margin: 12px 0;
+}
 
-    .quantity-control {
-      display:flex;
-      align-items:center;
-      gap:15px;
-    }
+.detail-rating {
+  color: #a37a29;
+  font-size: 14px;
+  margin: 12px 0;
+}
 
-    .quantity-control button {
-      width:38px;
-      height:38px;
-      background:white;
-      border:1px solid #ddd;
-      font-size:18px;
-    }
+.detail-rating span {
+  color: #777;
+}
 
-    #quantity {
-      min-width:20px;
-      text-align:center;
-    }
+.detail-price {
+  margin: 20px 0;
+  font-size: 28px;
+  font-weight: bold;
+}
 
-    .detail-buttons {
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin-top:25px;
-    }
+.detail-price del {
+  color: #999;
+  font-size: 16px;
+  font-weight: normal;
+  margin-left: 10px;
+}
 
-    .detail-buttons button,
-    .detail-buttons a {
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      text-align:center;
-      min-height:48px;
-      padding:12px;
-      font-size:11px;
-      font-weight:bold;
-      letter-spacing:.5px;
-    }
+.detail-description {
+  color: #666;
+  line-height: 1.8;
+  font-size: 14px;
+}
 
-    .add-cart {
-      background:var(--gold);
-      border:1px solid var(--gold);
-      color:#111;
-    }
+.detail-label {
+  display: block;
+  margin: 20px 0 10px;
+  font-size: 13px;
+  font-weight: bold;
+}
 
-    .buy-now {
-      background:#111;
-      border:1px solid #111;
-      color:white;
-    }
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
 
-    .detail-note {
-      color:#888;
-      font-size:12px;
-      line-height:1.7;
-      margin-top:20px;
-    }
+.quantity-control button {
+  width: 38px;
+  height: 38px;
+  background: white;
+  border: 1px solid #ddd;
+  font-size: 18px;
+  cursor: pointer;
+}
 
-    @media(max-width:700px) {
-      .product-page { margin:20px auto; padding:12px; }
-      .detail-layout { grid-template-columns:1fr; gap:25px; padding:17px; }
-      .main-image { height:300px; }
-      .detail-buttons { grid-template-columns:1fr; }
-    }
-  
-.product-gallery{min-width:0}
-.main-image{display:block;width:100%;height:440px;object-fit:contain;background:#f3f1ed;border:1px solid #eee}
-.thumbnail-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:10px}
-.product-thumbnail{width:100%;height:72px;object-fit:cover;background:#f3f1ed;border:1px solid #ddd;cursor:pointer;border-radius:4px}
-.product-thumbnail.active{border:2px solid var(--gold)}
-@media(max-width:700px){.main-image{height:300px}.thumbnail-grid{gap:5px}.product-thumbnail{height:54px}}
+#quantity {
+  min-width: 20px;
+  text-align: center;
+}
+
+.detail-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.detail-buttons button,
+.detail-buttons a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 48px;
+  padding: 12px;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: .5px;
+  cursor: pointer;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.add-cart {
+  background: var(--gold, #b99755);
+  border: 1px solid var(--gold, #b99755);
+  color: #111;
+}
+
+.buy-now {
+  background: #111;
+  border: 1px solid #111;
+  color: white;
+}
+
+.detail-note {
+  color: #888;
+  font-size: 12px;
+  line-height: 1.7;
+  margin-top: 18px;
+}
+
+.product-extra {
+  margin-top: 22px;
+}
+
+.extra-card {
+  background: white;
+  border: 1px solid #e9e4da;
+  margin-bottom: 16px;
+  padding: 22px;
+}
+
+.extra-card h2 {
+  font: 500 23px Georgia, serif;
+  margin: 0 0 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee8de;
+}
+
+.extra-card h3 {
+  font-size: 15px;
+  margin: 15px 0 8px;
+}
+
+.extra-card p,
+.extra-card li {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.extra-card ul {
+  padding-left: 20px;
+}
+
+.details-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.details-table td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  text-align: left;
+  line-height: 1.6;
+}
+
+.details-table td:first-child {
+  width: 35%;
+  color: #777;
+}
+
+.review-note {
+  color: #888;
+  font-size: 12px !important;
+}
+
+.toast {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: white;
+  padding: 13px 22px;
+  z-index: 9999;
+  display: none;
+  font-size: 14px;
+}
+
+.toast.show {
+  display: block;
+}
+
+@media (max-width: 700px) {
+  .product-page {
+    margin: 16px auto;
+    padding: 0 10px;
+  }
+
+  .detail-layout {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 14px;
+  }
+
+  .main-image {
+    height: 300px;
+  }
+
+  .thumbnail-grid {
+    gap: 5px;
+  }
+
+  .product-thumbnail {
+    height: 52px;
+  }
+
+  .detail-buttons {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .extra-card {
+    padding: 16px;
+  }
+
+  .extra-card h2 {
+    font-size: 21px;
+  }
+}
 </style>
 </head>
 
 <body>
-  <header class="header">
-    <a class="logo" href="index.html">ALL<span>WATCH</span></a>
-    <a href="cart.html" style="color:white">🛒 View Cart</a>
-  </header>
 
-  <main class="product-page">
-    <div class="breadcrumb">
-      <a href="index.html">Home</a> /
-      <a href="index.html#products">Shop</a> /
-      <span id="breadcrumbName">Product</span>
+<header class="header">
+  <a class="logo" href="index.html">ALL<span>WATCH</span></a>
+  <a href="cart.html" style="color:white">🛒 View Cart</a>
+</header>
+
+<main class="product-page">
+
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> /
+    <a href="index.html#products">Shop</a> /
+    <span id="breadcrumbName">Product</span>
+  </div>
+
+  <section class="detail-layout">
+
+    <div class="product-gallery">
+      <img id="productImage" class="main-image"
+           src="" alt="Product image">
+
+      <div id="productThumbnails" class="thumbnail-grid"
+           aria-label="Product images"></div>
     </div>
 
-    <section class="detail-layout">
-      <div class="product-gallery">
-        <img id="productImage" class="main-image" src="" alt="Product image">
-        <div id="productThumbnails" class="thumbnail-grid" aria-label="Product images"></div>
+    <div class="detail-info">
+
+      <p class="detail-category" id="productCategory"></p>
+
+      <h1 id="productName">Loading product...</h1>
+
+      <div class="detail-rating" aria-live="polite">
+        <span id="ratingStars">☆☆☆☆☆</span>
+        <span id="ratingText">Ratings and reviews are loading...</span>
       </div>
 
-      <div class="detail-info">
-        <p class="detail-category" id="productCategory"></p>
-        <h1 id="productName">Loading product...</h1>
-        <div class="detail-rating">★★★★☆ <span style="color:#777">Sample rating</span></div>
-
-        <div class="detail-price">
-          <span id="productPrice"></span>
-          <del id="oldPrice"></del>
-        </div>
-
-        <p class="detail-description" id="productDescription"></p>
-
-        <label class="detail-label" for="quantity">Quantity</label>
-        <div class="quantity-control">
-          <button id="minusQty" type="button" aria-label="Decrease quantity">−</button>
-          <span id="quantity">1</span>
-          <button id="plusQty" type="button" aria-label="Increase quantity">+</button>
-        </div>
-
-        <div class="detail-buttons">
-          <button class="add-cart" id="addToCart">ADD TO CART +</button>
-          <a class="buy-now" href="cart.html" id="buyNow">BUY NOW →</a>
-        </div>
-
-        <p class="detail-note">
-          Sample product information. Verify the actual product, price,
-          availability and warranty before accepting real orders.
-        </p>
+      <div class="detail-price">
+        <span id="productPrice"></span>
+        <del id="oldPrice"></del>
       </div>
-    </section>
-  </main>
 
-  <div class="toast" id="toast"></div>
+      <p class="detail-description" id="productDescription"></p>
 
-  <script type="module">
-    import { supabase, supabaseConfigured, money, escapeHTML } from "./supabase.js";
-    const demoProducts=[
-      {id:1,name:"Classic Men's Watch",category:"Men",price:1499,old_price:1999,image_url:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=85",description:"A classic everyday watch design."},
-      {id:2,name:"Elegant Women's Watch",category:"Women",price:1299,old_price:1799,image_url:"https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&w=900&q=85",description:"An elegant watch style for everyday wear."},
-      {id:3,name:"Modern Smart Watch",category:"Smart Watch",price:2499,old_price:2999,image_url:"https://images.unsplash.com/photo-1544117519-31a4b719223d?auto=format&fit=crop&w=900&q=85",description:"A modern smartwatch style."},
-      {id:4,name:"Premium Luxury Watch",category:"Luxury",price:3999,old_price:4999,image_url:"https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=900&q=85",description:"A premium-inspired design."},
-      {id:5,name:"Minimal Wall Clock",category:"Wall Clock",price:999,old_price:1299,image_url:"https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=900&q=85",description:"A simple clock for your home or office."},
-      {id:6,name:"Watch Accessories",category:"Accessories",price:499,old_price:699,image_url:"https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=900&q=85",description:"Accessories to complement your watch."},
-      {id:7,name:"Everyday Men's Watch",category:"Men",price:1799,old_price:2299,image_url:"https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=900&q=85",description:"A versatile everyday style."},
-      {id:8,name:"Premium Ladies Watch",category:"Women",price:1599,old_price:1999,image_url:"https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=900&q=85",description:"A refined style for your collection."}
-    ];
-    const params=new URLSearchParams(location.search);
-    const productId=params.get("id")||"1";
-    let product=null,quantity=1;
-    const toast=document.getElementById("toast");
-    function renderGallery(p){
-      const main=document.getElementById("productImage"), thumbs=document.getElementById("productThumbnails");
-      const raw=Array.isArray(p.image_urls)?p.image_urls:(Array.isArray(p.images)?p.images:[]);
-      const urls=[...new Set([...raw,p.image_url||p.image].filter(x=>typeof x==="string"&&x.trim()))].slice(0,6);
-      thumbs.replaceChildren();
-      if(!urls.length){main.removeAttribute("src");return;}
-      main.src=urls[0];main.alt=(p.name||"Product")+" image";
-      urls.forEach((url,index)=>{
-        const button=document.createElement("button");button.type="button";button.className="thumbnail-button";button.setAttribute("aria-label",`Show image ${index+1}`);
-        const img=document.createElement("img");img.className="product-thumbnail"+(index===0?" active":"");img.src=url;img.alt=`${p.name||"Product"} image ${index+1}`;
-        button.appendChild(img);
-        button.addEventListener("click",()=>{main.src=url;thumbs.querySelectorAll("img").forEach(item=>item.classList.toggle("active",item===img));});
-        thumbs.appendChild(button);
+      <label class="detail-label" for="quantity">Quantity</label>
+
+      <div class="quantity-control">
+        <button id="minusQty" type="button"
+                aria-label="Decrease quantity">−</button>
+        <span id="quantity">1</span>
+        <button id="plusQty" type="button"
+                aria-label="Increase quantity">+</button>
+      </div>
+
+      <div class="detail-buttons">
+        <button class="add-cart" id="addToCart" type="button">
+          ADD TO CART +
+        </button>
+
+        <a class="buy-now" href="cart.html" id="buyNow">
+          BUY NOW →
+        </a>
+      </div>
+
+      <p class="detail-note">
+        Please verify product details, delivery availability and
+        warranty terms before placing an order.
+      </p>
+
+    </div>
+  </section>
+
+  <section class="product-extra">
+
+    <div class="extra-card">
+      <h2>Delivery Details</h2>
+      <p>🚚 Delivery availability depends on your location.</p>
+      <p>📦 Order tracking details can be checked after the order
+         has been confirmed.</p>
+      <p>↩️ Please check the store's return and replacement policy
+         before ordering.</p>
+      <label for="deliveryPin"><strong>Check delivery PIN code</strong></label>
+      <div style="display:flex;gap:10px;margin-top:10px;max-width:380px">
+        <input id="deliveryPin" type="text" inputmode="numeric"
+               maxlength="6" placeholder="Enter 6-digit PIN"
+               style="min-width:0;width:100%;padding:12px;border:1px solid #ddd">
+        <button id="checkPin" type="button"
+                style="padding:10px 14px;background:#111;color:white;border:0;cursor:pointer">
+          Check
+        </button>
+      </div>
+      <p id="pinMessage" aria-live="polite"></p>
+    </div>
+
+    <div class="extra-card">
+      <h2>Product Highlights</h2>
+      <ul>
+        <li id="highlightCategory">Category: Loading...</li>
+        <li id="highlightPrice">Selling price: Loading...</li>
+        <li id="highlightDiscount">Discount: Checking price...</li>
+        <li id="highlightDescription">Description: Loading...</li>
+        <li id="highlightImages">Product images: Loading...</li>
+      </ul>
+    </div>
+
+    <div class="extra-card">
+      <h2>All Details</h2>
+      <table class="details-table">
+        <tbody>
+          <tr>
+            <td>Product Name</td>
+            <td id="extraProductName">-</td>
+          </tr>
+          <tr>
+            <td>Category</td>
+            <td id="extraProductCategory">-</td>
+          </tr>
+          <tr>
+            <td>Price</td>
+            <td id="extraProductPrice">-</td>
+          </tr>
+          <tr>
+            <td>Original Price</td>
+            <td id="extraOriginalPrice">-</td>
+          </tr>
+          <tr>
+            <td>Product ID</td>
+            <td id="extraProductId">-</td>
+          </tr>
+          <tr>
+            <td>Description</td>
+            <td id="extraProductDescription">-</td>
+          </tr>
+          <tr>
+            <td>Product Images</td>
+            <td id="extraProductImageCount">-</td>
+          </tr>
+          <tr>
+            <td>Warranty</td>
+            <td>1 Year Domestic Warranty — confirm coverage in the warranty card supplied with the actual product.</td>
+          </tr>
+          <tr>
+            <td>Availability</td>
+            <td id="extraProductAvailability">Availability depends on the product record in the store.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="extra-card">
+      <h2>Warranty Information</h2>
+      <h3>1 Year Domestic Warranty</h3>
+      <p>
+        Warranty coverage must be confirmed from the actual product
+        manufacturer or seller. Check the warranty card and terms
+        supplied with your product.
+      </p>
+    </div>
+
+    <div class="extra-card">
+      <h2>Ratings and Reviews</h2>
+      <p id="reviewSummary">Customer ratings are not available yet.</p>
+      <p class="review-note">
+        Only approved review records from Supabase are shown. If reviews are not configured,
+        this section will not invent customer ratings.
+      </p>
+    </div>
+
+  </section>
+
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="module">
+import {
+  supabase,
+  supabaseConfigured,
+  money
+} from "./supabase.js";
+
+const demoProducts = [
+  {
+    id: 1,
+    name: "Classic Men's Watch",
+    category: "Men",
+    price: 1499,
+    old_price: 1999,
+    image_url: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=85",
+    description: "A classic everyday watch design."
+  },
+  {
+    id: 2,
+    name: "Elegant Women's Watch",
+    category: "Women",
+    price: 1299,
+    old_price: 1799,
+    image_url: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&w=900&q=85",
+    description: "An elegant watch style for everyday wear."
+  },
+  {
+    id: 3,
+    name: "Modern Smart Watch",
+    category: "Smart Watch",
+    price: 2499,
+    old_price: 2999,
+    image_url: "https://images.unsplash.com/photo-1544117519-31a4b719223d?auto=format&fit=crop&w=900&q=85",
+    description: "A modern smartwatch style."
+  },
+  {
+    id: 4,
+    name: "Premium Luxury Watch",
+    category: "Luxury",
+    price: 3999,
+    old_price: 4999,
+    image_url: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=900&q=85",
+    description: "A premium-inspired design."
+  },
+  {
+    id: 5,
+    name: "Minimal Wall Clock",
+    category: "Wall Clock",
+    price: 999,
+    old_price: 1299,
+    image_url: "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=900&q=85",
+    description: "A simple clock for your home or office."
+  },
+  {
+    id: 6,
+    name: "Watch Accessories",
+    category: "Accessories",
+    price: 499,
+    old_price: 699,
+    image_url: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=900&q=85",
+    description: "Accessories to complement your watch."
+  },
+  {
+    id: 7,
+    name: "Everyday Men's Watch",
+    category: "Men",
+    price: 1799,
+    old_price: 2299,
+    image_url: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=900&q=85",
+    description: "A versatile everyday style."
+  },
+  {
+    id: 8,
+    name: "Premium Ladies Watch",
+    category: "Women",
+    price: 1599,
+    old_price: 1999,
+    image_url: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=900&q=85",
+    description: "A refined style for your collection."
+  }
+];
+
+const params = new URLSearchParams(location.search);
+const productId = params.get("id") || "1";
+
+let product = null;
+let quantity = 1;
+
+const toast = document.getElementById("toast");
+
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2500);
+}
+
+function renderGallery(p) {
+  const main = document.getElementById("productImage");
+  const thumbs = document.getElementById("productThumbnails");
+
+  const raw = Array.isArray(p.image_urls)
+    ? p.image_urls
+    : Array.isArray(p.images) ? p.images : [];
+
+  const urls = [...new Set([
+    ...raw,
+    p.image_url,
+    p.image
+  ].filter(url => typeof url === "string" && url.trim()))].slice(0, 6);
+
+  thumbs.replaceChildren();
+
+  if (!urls.length) {
+    main.removeAttribute("src");
+    main.alt = "No product image available";
+    return;
+  }
+
+  main.src = urls[0];
+  main.alt = (p.name || "Product") + " image";
+
+  urls.forEach((url, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "thumbnail-button" + (index === 0 ? " active" : "");
+    button.setAttribute("aria-label", "Show image " + (index + 1));
+
+    const img = document.createElement("img");
+    img.className = "product-thumbnail";
+    img.src = url;
+    img.alt = (p.name || "Product") + " image " + (index + 1);
+
+    button.appendChild(img);
+
+    button.addEventListener("click", () => {
+      main.src = url;
+      thumbs.querySelectorAll(".thumbnail-button").forEach(item => {
+        item.classList.toggle("active", item === button);
       });
+    });
+
+    thumbs.appendChild(button);
+  });
+}
+
+function productImageUrls(p) {
+  const raw = Array.isArray(p.image_urls)
+    ? p.image_urls
+    : Array.isArray(p.images) ? p.images : [];
+  return [...new Set([...raw, p.image_url, p.image]
+    .filter(url => typeof url === "string" && url.trim()))].slice(0, 6);
+}
+
+function updateExtraDetails() {
+  if (!product) return;
+
+  const price = Number(product.price || 0);
+  const oldPrice = Number(product.old_price ?? product.oldPrice ?? 0);
+  const discount = oldPrice > price && oldPrice > 0
+    ? Math.round((1 - price / oldPrice) * 100)
+    : 0;
+  const imageCount = productImageUrls(product).length;
+  const description = product.description || "No description has been added for this product yet.";
+
+  document.getElementById("extraProductName").textContent = product.name || "-";
+  document.getElementById("extraProductCategory").textContent = product.category || "-";
+  document.getElementById("extraProductPrice").textContent = money(price);
+  document.getElementById("extraOriginalPrice").textContent =
+    oldPrice > price ? money(oldPrice) : "Not provided";
+  document.getElementById("extraProductId").textContent = String(product.id ?? "-");
+  document.getElementById("extraProductDescription").textContent = description;
+  document.getElementById("extraProductImageCount").textContent =
+    imageCount ? `${imageCount} image(s)` : "No image uploaded";
+  document.getElementById("extraProductAvailability").textContent =
+    product.active === false ? "Currently unavailable" : "Listed in store";
+
+  document.getElementById("highlightCategory").textContent =
+    "Category: " + (product.category || "Not specified");
+  document.getElementById("highlightPrice").textContent =
+    "Selling price: " + money(price);
+  document.getElementById("highlightDiscount").textContent =
+    discount ? `Discount: ${discount}% off` : "Discount: No original price discount listed";
+  document.getElementById("highlightDescription").textContent =
+    "Description: " + description;
+  document.getElementById("highlightImages").textContent =
+    "Product images: " + imageCount;
+}
+
+async function loadProductReviews(productIdValue) {
+  const summary = document.getElementById("reviewSummary");
+  const stars = document.getElementById("ratingStars");
+  const ratingText = document.getElementById("ratingText");
+
+  // Reviews are optional. If the table or expected columns are not set up,
+  // keep the page working and do not invent ratings.
+  if (!supabaseConfigured) {
+    summary.textContent = "Customer ratings will appear here when verified reviews are connected to Supabase.";
+    stars.textContent = "☆☆☆☆☆";
+    ratingText.textContent = "No verified ratings yet";
+    return;
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from("product_reviews")
+      .select("rating, review, created_at")
+      .eq("product_id", productIdValue)
+      .eq("approved", true);
+
+    if (error || !Array.isArray(data) || data.length === 0) {
+      summary.textContent = "No approved customer reviews are available for this product yet.";
+      stars.textContent = "☆☆☆☆☆";
+      ratingText.textContent = "No verified ratings yet";
+      return;
     }
-    function showToast(text){toast.textContent=text;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),2200);}
-    async function loadProduct(){
-      if(supabaseConfigured){
-        const {data,error}=await supabase.from("products").select("*").eq("id",productId).eq("active",true).maybeSingle();
-        if(!error&&data)product=data;
+
+    const ratings = data
+      .map(item => Number(item.rating))
+      .filter(value => Number.isFinite(value) && value >= 1 && value <= 5);
+    if (!ratings.length) {
+      summary.textContent = "Approved reviews exist, but no valid ratings are available yet.";
+      stars.textContent = "☆☆☆☆☆";
+      ratingText.textContent = "Ratings unavailable";
+      return;
+    }
+
+    const average = ratings.reduce((sum, value) => sum + value, 0) / ratings.length;
+    stars.textContent = "★".repeat(Math.round(average)) + "☆".repeat(5 - Math.round(average));
+    ratingText.textContent = `${average.toFixed(1)} / 5 (${ratings.length} rating${ratings.length === 1 ? "" : "s"})`;
+    summary.textContent = `${ratings.length} approved rating${ratings.length === 1 ? "" : "s"} · Average ${average.toFixed(1)} out of 5.`;
+  } catch {
+    summary.textContent = "Customer reviews are not connected yet. No rating has been assumed.";
+    stars.textContent = "☆☆☆☆☆";
+    ratingText.textContent = "No verified ratings yet";
+  }
+}
+
+async function loadProduct() {
+  if (supabaseConfigured) {
+    try {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .eq("id", productId)
+        .eq("active", true)
+        .maybeSingle();
+
+      if (!error && data) {
+        product = data;
       }
-      if(!product)product=demoProducts.find(p=>String(p.id)===String(productId));
-      if(!product){
-        document.getElementById("productName").textContent="Product not found";
-        document.getElementById("productDescription").textContent="Please return to the shop and select a product.";
-        document.getElementById("addToCart").disabled=true;document.getElementById("buyNow").hidden=true;return;
-      }
-      document.title=product.name+" | WATCH.T";
-      document.getElementById("breadcrumbName").textContent=product.name;
-      document.getElementById("productCategory").textContent=product.category;
-      document.getElementById("productName").textContent=product.name;
-      renderGallery(product);
-      document.getElementById("productPrice").textContent=money(product.price);
-      document.getElementById("oldPrice").textContent=money(product.old_price??product.oldPrice??product.price);
-      document.getElementById("productDescription").textContent=product.description||"Discover this WATCH.T design.";
+    } catch (error) {
+      console.error("Product loading error:", error);
     }
-    function updateQuantity(){document.getElementById("quantity").textContent=quantity;}
-    document.getElementById("minusQty").addEventListener("click",()=>{if(quantity>1)quantity--;updateQuantity();});
-    document.getElementById("plusQty").addEventListener("click",()=>{if(quantity<10)quantity++;updateQuantity();});
-    function addProductToCart(){
-      if(!product)return;
-      let cart=[];try{cart=JSON.parse(localStorage.getItem("allWatchCart")||"[]");if(!Array.isArray(cart))cart=[];}catch{cart=[];}
-      const existing=cart.find(i=>String(i.id)===String(product.id));
-      if(existing)existing.quantity=Math.min(99,Number(existing.quantity||0)+quantity);
-      else cart.push({id:product.id,name:product.name,category:product.category,price:Number(product.price),image:product.image_url||product.image,quantity});
-      localStorage.setItem("allWatchCart",JSON.stringify(cart));showToast("Added to cart!");
+  }
+
+  if (!product) {
+    product = demoProducts.find(
+      item => String(item.id) === String(productId)
+    );
+  }
+
+  if (!product) {
+    document.getElementById("productName").textContent =
+      "Product not found";
+
+    document.getElementById("productDescription").textContent =
+      "Please return to the shop and select a product.";
+
+    document.getElementById("addToCart").disabled = true;
+    document.getElementById("buyNow").hidden = true;
+    return;
+  }
+
+  document.title = product.name + " | WATCH.T";
+
+  document.getElementById("breadcrumbName").textContent = product.name;
+  document.getElementById("productCategory").textContent =
+    product.category || "";
+
+  document.getElementById("productName").textContent = product.name;
+  document.getElementById("productPrice").textContent = money(product.price);
+
+  const oldPrice = product.old_price ?? product.oldPrice;
+
+  document.getElementById("oldPrice").textContent =
+    oldPrice != null && Number(oldPrice) > Number(product.price)
+      ? money(oldPrice)
+      : "";
+
+  document.getElementById("productDescription").textContent =
+    product.description || "Discover this WATCH.T design.";
+
+  renderGallery(product);
+  updateExtraDetails();
+  await loadProductReviews(product.id);
+}
+
+function updateQuantity() {
+  document.getElementById("quantity").textContent = quantity;
+}
+
+document.getElementById("minusQty").addEventListener("click", () => {
+  if (quantity > 1) {
+    quantity--;
+    updateQuantity();
+  }
+});
+
+document.getElementById("plusQty").addEventListener("click", () => {
+  if (quantity < 10) {
+    quantity++;
+    updateQuantity();
+  }
+});
+
+function addProductToCart() {
+  if (!product) return;
+
+  let cart = [];
+
+  try {
+    cart = JSON.parse(localStorage.getItem("allWatchCart") || "[]");
+    if (!Array.isArray(cart)) cart = [];
+  } catch {
+    cart = [];
+  }
+
+  const existing = cart.find(
+    item => String(item.id) === String(product.id)
+  );
+
+  if (existing) {
+    existing.quantity = Math.min(
+      99,
+      Number(existing.quantity || 0) + quantity
+    );
+  } else {
+    cart.push({
+      id: product.id,
+      name: product.name,
+      category: product.category,
+      price: Number(product.price),
+      image: product.image_url || product.image ||
+        (Array.isArray(product.images) ? product.images[0] : ""),
+      quantity
+    });
+  }
+
+  localStorage.setItem("allWatchCart", JSON.stringify(cart));
+  showToast("Added to cart!");
+}
+
+document.getElementById("addToCart").addEventListener(
+  "click",
+  addProductToCart
+);
+
+document.getElementById("buyNow").addEventListener("click", event => {
+  if (!product) {
+    event.preventDefault();
+    return;
+  }
+
+  addProductToCart();
+});
+
+document.getElementById("checkPin").addEventListener("click", async () => {
+  const pin = document.getElementById("deliveryPin").value.trim();
+  const message = document.getElementById("pinMessage");
+  const button = document.getElementById("checkPin");
+
+  if (!/^[0-9]{6}$/.test(pin)) {
+    message.textContent = "Please enter a valid 6-digit PIN code.";
+    return;
+  }
+
+  if (!supabaseConfigured) {
+    message.textContent = "Delivery checking is not configured yet. Please try again later.";
+    return;
+  }
+
+  button.disabled = true;
+  message.textContent = "Checking delivery availability...";
+
+  try {
+    const { data, error } = await supabase
+      .from("delivery_pincodes")
+      .select("available")
+      .eq("pincode", pin)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (data?.available === true) {
+      message.textContent = "Delivery is available for this PIN code!";
+    } else {
+      message.textContent = "Sorry, delivery is not available for this PIN code.";
     }
-    document.getElementById("addToCart").addEventListener("click",addProductToCart);
-    document.getElementById("buyNow").addEventListener("click",e=>{if(!product){e.preventDefault();return;}addProductToCart();});
-    loadProduct();
-  </script>
+  } catch (error) {
+    console.error("PIN check failed:", error);
+    message.textContent = "Unable to check PIN code. Please try again.";
+  } finally {
+    button.disabled = false;
+  }
+});
+
+loadProduct();
+</script>
+
 </body>
 </html>
+```
